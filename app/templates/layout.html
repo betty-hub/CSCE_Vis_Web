@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>US Health Dashboard</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    {% block content %}{% endblock %}
+
+    <!-- Only ONE Plotly include -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <!-- Load custom scripts (order matters!) -->
+    <script src="/static/js/script.js"></script>
+    <script src="{{ url_for('static', path='/js/index.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+h2 {
+  margin-bottom: 10px;  /* Reduce as needed */
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  padding: 20px;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  box-sizing: border-box;
+}
+
+.left-panel,
+.right-panel {
+  width: 50%;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+#map {
+  width: 100%;
+  height: 80vh;
+  min-height: 800px;
+  margin-top: 0;         /* Remove top margin */
+  padding-top: 0;        /* Remove top padding */
+}
