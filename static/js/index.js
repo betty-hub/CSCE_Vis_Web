@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-
-    const yearSelect = document.getElementById("yearSelect");
+    const yearSelect = document.getElementById("YearStart"); // Ensure the correct ID is used
     const questionSelect = document.getElementById("questionSelect");
     const stratDropdown = document.getElementById("stratCategory");
 

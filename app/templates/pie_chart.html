@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pie Chart</title>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f4f4f9;
+        }
+        h1 {
+            color: #333;
+        }
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .form-container form {
+            display: flex;
+            gap: 10px;
+        }
+        select {
+            padding: 6px;
+            font-size: 16px;
+        }
+        #question {
+            width: 200%; /* Adjust the width to fit all questions */
+            max-width: 700px; /* Limit the maximum width */
+        }
+        #pie-chart {
+            width: 80%;
+            max-width: 600px;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pie Chart</h1>
+    <div class="form-container">
+        <form id="question-form">
+            <label for="question">Question:</label>
+            <select id="question" name="question">
+                {% for question in questions %}
+                <option value="{{ question[0] }}">{{ question[1] }}</option>
+                {% endfor %}
+            </select>
+        </form>
+        <form id="pie-form">
+            <label for="year">Year:</label>
+            <select id="year" name="year">
+                {% for year in years %}
+                <option value="{{ year }}">{{ year }}</option>
+                {% endfor %}
+            </select>
+            <label for="state">State:</label>
+            <select id="state" name="state">
+                {% for state in states %}
+                <option value="{{ state }}">{{ state }}</option>
+                {% endfor %}
+            </select>
+            <label for="category">Category:</label>
+            <select id="category" name="category">
+                <option value="Income">Income</option>
+                <option value="Sex">Sex</option>
+                <option value="Education">Education</option>
+            </select>
+        </form>
+    </div>
+    <div id="pie-chart"></div>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script>
+        async function fetchPieData(year, question, state, category) {
+            const response = await fetch(`/api/pie_data?year=${year}&question_id=${question}&state=${state}&category=${category}`);
+            const data = await response.json();
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+            const values = data.data.map(item => item.Data_Value);
+            const labels = data.data.map(item => item[category === 'Sex' ? 'Sex' : category]);
+            const pieData = [{
+                values: values,
+                labels: labels,
+                type: 'pie',
+                marker: {
+                    colors: ['#FF6F61', '#6B5B95', '#88B04B', '#F7CAC9', '#92A8D1', '#955251']
+                }
+            }];
+            Plotly.newPlot('pie-chart', pieData);
+        }
+
+        document.getElementById('year').addEventListener('change', function() {
+            const year = document.getElementById('year').value;
+            const question = document.getElementById('question').value;
+            const state = document.getElementById('state').value;
+            const category = document.getElementById('category').value;
+            fetchPieData(year, question, state, category);
+        });
+
+        document.getElementById('question').addEventListener('change', function() {
+            const year = document.getElementById('year').value;
+            const question = document.getElementById('question').value;
+            const state = document.getElementById('state').value;
+            const category = document.getElementById('category').value;
+            fetchPieData(year, question, state, category);
+        });
+
+        document.getElementById('state').addEventListener('change', function() {
+            const year = document.getElementById('year').value;
+            const question = document.getElementById('question').value;
+            const state = document.getElementById('state').value;
+            const category = document.getElementById('category').value;
+            fetchPieData(year, question, state, category);
+        });
+
+        document.getElementById('category').addEventListener('change', function() {
+            const year = document.getElementById('year').value;
+            const question = document.getElementById('question').value;
+            const state = document.getElementById('state').value;
+            const category = document.getElementById('category').value;
+            fetchPieData(year, question, state, category);
+        });
+
+        // Initial load
+        fetchPieData(document.getElementById('year').value, document.getElementById('question').value, document.getElementById('state').value, document.getElementById('category').value);
+    </script>
+</body>
+</html>
